@@ -8,7 +8,17 @@ app = Flask(__name__)
 #def hello() -> str:
 #    """First Flask message"""
 #    return 'Hello world from Flask'
+@app.route('/viewlog')
+def view_the_log() -> str:
+    with open('vsearch.log') as log:
+        contents= log.read()
+    return contents
 
+
+def log_request(req: 'flask_request', res: str) -> None:
+    with open('vsearch.log', 'a') as log:
+        print(req, res, file= log)
+        
 
 @app.route('/search4', methods=['POST'])
 def do_search() -> 'html':
@@ -16,6 +26,7 @@ def do_search() -> 'html':
     letters = request.form['letters']
     title = 'Here are your results'
     results = str(search4letter(phrase, letters))
+    log_request(request, results)
     return render_template('results.html',
                            the_phrase=phrase,
                            the_letters=letters,
