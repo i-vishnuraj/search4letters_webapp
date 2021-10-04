@@ -1,0 +1,71 @@
+
+mysql> CREATE USER 'vsearch' IDENTIFIED BY 'vsearchpasswd';
+mysql> GRANT ALL ON vsearchlogDB.* TO 'vsearch';
+mysql> FLUSH PRIVILEGES;
+
+
+
+C:\Program Files\MySQL\MySQL Server 8.0\bin>mysql --user=vsearch --password vsearchlogDB
+Enter password: *************
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 20
+Server version: 8.0.26 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> status
+--------------
+mysql  Ver 8.0.26 for Win64 on x86_64 (MySQL Community Server - GPL)
+
+Connection id:          20
+Current database:       vsearchlogdb
+Current user:           vsearch@localhost
+SSL:                    Cipher in use is TLS_AES_256_GCM_SHA384
+Using delimiter:        ;
+Server version:         8.0.26 MySQL Community Server - GPL
+Protocol version:       10
+Connection:             localhost via TCP/IP
+Server characterset:    utf8mb4
+Db     characterset:    utf8mb4
+Client characterset:    cp850
+Conn.  characterset:    cp850
+TCP port:               3306
+Binary data as:         Hexadecimal
+Uptime:                 8 days 14 hours 51 min 45 sec
+
+Threads: 3  Questions: 55  Slow queries: 1  Opens: 181  Flush tables: 3  Open tables: 100  Queries per second avg: 0.000
+--------------
+
+mysql> create table log (
+    -> id int auto_increment primary key,
+    -> ts timestamp default current_timestamp;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 3
+mysql> create table log (
+    -> id int auto_increment primary key,
+    -> ts timestamp default current_timestamp,
+    -> phrase varchar(128) not null,
+    -> letters varchar(32) not null,
+    -> ip varchar(16) not null,
+    -> browser_string varchar(256) not null,
+    -> results varchar(64) not null);
+Query OK, 0 rows affected (3.91 sec)
+
+mysql> describe log;
++----------------+--------------+------+-----+-------------------+-------------------+
+| Field          | Type         | Null | Key | Default           | Extra             |
++----------------+--------------+------+-----+-------------------+-------------------+
+| id             | int          | NO   | PRI | NULL              | auto_increment    |
+| ts             | timestamp    | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
+| phrase         | varchar(128) | NO   |     | NULL              |                   |
+| letters        | varchar(32)  | NO   |     | NULL              |                   |
+| ip             | varchar(16)  | NO   |     | NULL              |                   |
+| browser_string | varchar(256) | NO   |     | NULL              |                   |
+| results        | varchar(64)  | NO   |     | NULL              |                   |
++----------------+--------------+------+-----+-------------------+-------------------+
+7 rows in set (0.91 sec)

@@ -1,0 +1,38 @@
+dbconfig = {'host':'127.0.0.1', 'user' : 'vsearch', 'password' : 'vsearchpasswd', 'database' : 'vsearchlogDB',}
+import mysql.connector
+conn = mysql.connector.connect(**dbconfig)
+cursor = conn.cursor()
+_SQL = """show tables"""
+cursor.execute(_SQL)
+res = cursor.fetchall()
+res
+[('log',)]
+_SQL = """describe log"""
+cursor.execute(_SQL)
+res = cursor.fetchall()
+res
+[('id', b'int', 'NO', 'PRI', None, 'auto_increment'), ('ts', b'timestamp', 'YES', '', b'CURRENT_TIMESTAMP', 'DEFAULT_GENERATED'), ('phrase', b'varchar(128)', 'NO', '', None, ''), ('letters', b'varchar(32)', 'NO', '', None, ''), ('ip', b'varchar(16)', 'NO', '', None, ''), ('browser_string', b'varchar(256)', 'NO', '', None, ''), ('results', b'varchar(64)', 'NO', '', None, '')]
+for row in res:
+    print(row)
+    
+('id', b'int', 'NO', 'PRI', None, 'auto_increment')
+('ts', b'timestamp', 'YES', '', b'CURRENT_TIMESTAMP', 'DEFAULT_GENERATED')
+('phrase', b'varchar(128)', 'NO', '', None, '')
+('letters', b'varchar(32)', 'NO', '', None, '')
+('ip', b'varchar(16)', 'NO', '', None, '')
+('browser_string', b'varchar(256)', 'NO', '', None, '')
+('results', b'varchar(64)', 'NO', '', None, '')
+_SQL = """insert into log (phrase, letters, ip, browser_string, results) """
+_SQL = """insert into log (phrase, letters, ip, browser_string, results) values ('hitch-hicker', 'aeiou', '127.0.0.1', 'Firefox', "{'e', 'i'}")"""
+cursor.execute(_SQL)
+conn.commit()
+_SQL = """select * from log"""
+cursor.execute(_SQL)
+for row in cursor.fetchall():
+    print(row)
+    
+(1, datetime.datetime(2021, 10, 4, 15, 37, 6), 'hitch-hicker', 'aeiou', '127.0.0.1', 'Firefox', "{'e', 'i'}")
+cursor.close()
+True
+conn.close()
+
