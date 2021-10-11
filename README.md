@@ -11,3 +11,5 @@ As part of learning or relearning Python :snake:, the repository walks through b
 - Flask module for Minor Web App Deployment
 - Jinja2 Template Engine
 - HTML & CSS file structure
+- Context management Protocol
+- mySQL connector for logging and retrieve log contents
